@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio Pro - Bull Market</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --border-radius: 8px;
+            --shadow: 0 2px 4px rgba(0,0,0,0.1);
+            --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            padding: 15px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* HEADER */
+        header {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        header h1 {
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: var(--light);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+        }
+
+        .user-info span {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .user-info strong {
+            color: var(--primary);
+            font-size: 16px;
+        }
+
+        .user-selector {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* CARDS */
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+            border-bottom: 2px solid var(--light);
+            padding-bottom: 10px;
+        }
+
+        .card h3 {
+            color: var(--dark);
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 15px;
+        }
+
+        /* GRID */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* FORMS */
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 13px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* BUTTONS */
+        button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ALERTS */
+        .alert {
+            padding: 12px 15px;
+            border-radius: var(--border-radius);
+            margin-bottom: 15px;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .alert-info {
+            background: #cfe2ff;
+            color: #084298;
+            border-left: 4px solid #084298;
+        }
+
+        .alert-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            border-left: 4px solid #0f5132;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #842029;
+            border-left: 4px solid #842029;
+        }
+
+        .alert button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 0;
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--light);
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            padding: 12px 20px;
+            color: #999;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            background: var(--light);
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #555;
+            border-bottom: 2px solid #ddd;
+        }
+
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        /* BADGES */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        .badge-ars {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-usd {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .badge-positive {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .badge-negative {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        /* STATS */
+        .stat-card {
+            background: var(--light);
+            padding: 15px;
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--primary);
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-change {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .positive {
+            color: var(--success);
+        }
+
+        .negative {
+            color: var(--danger);
+        }
+
+        /* CHARTS */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin-bottom: 20px;
+        }
+
+        .chart-container.tall {
+            height: 400px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1200px) {
+            .grid-3 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            td, th {
+                padding: 8px;
+            }
+        }
+
+        /* EMPTY STATE */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-left: 2px solid #ddd;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            left: -7px;
+            top: 0;
+        }
+
+        .timeline-item-title {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .timeline-item-meta {
+            font-size: 12px;
+            color: #999;
+        }
+
+        /* MODALS */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div>
+                <h1>📊 Portafolio Pro - Bull Market</h1>
+                <p style="color: #999; font-size: 13px;">Análisis profesional de cartera con histórico</p>
+            </div>
+        </header>
+
+        <!-- ALERTAS -->
+        <div id="alertContainer"></div>
+
+        <!-- DASHBOARD PRINCIPAL -->
+        <div class="grid-3" id="dashboardStats"></div>
+
+        <!-- OPERACIONES Y ANÁLISIS -->
+        <div class="grid-2">
+            <!-- FORMULARIO DE OPERACIÓN -->
+            <div class="card">
+                <h2>➕ Nueva Operación</h2>
+                <form id="formOperacion" onsubmit="registrarOperacion(event)">
+                    <div class="form-group">
+                        <label>Ticker</label>
+                        <input type="text" id="ticker" placeholder="AO27D" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Cantidad</label>
+                            <input type="number" id="cantidad" placeholder="100" step="0.0001" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Moneda</label>
+                            <select id="moneda" required>
+                                <option value="ARS">ARS</option>
+                                <option value="USD">USD</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Precio de Compra</label>
+                            <input type="number" id="precioCompra" placeholder="100.50" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha</label>
+                            <input type="date" id="fechaCompra" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Notas (opcional)</label>
+                        <textarea id="notas" rows="2" placeholder="Vía CCL, compra puntual, etc."></textarea>
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn-primary">Registrar</button>
+                        <button type="reset" class="btn-secondary">Limpiar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ACTUALIZAR PRECIOS -->
+            <div class="card">
+                <h2>💹 Precios Actuales</h2>
+                <div id="actualizarPreciosForm" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+        </div>
+
+        <!-- GRÁFICOS PRINCIPALES -->
+        <div class="card">
+            <h2>📈 Análisis Histórico</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="cambiarTabAnalisis('evolucion')">Evolución Cartera</button>
+                <button class="tab-btn" onclick="cambiarTabAnalisis('tickets')">Por Ticket</button>
+                <button class="tab-btn" onclick="cambiarTabAnalisis('comparativa')">Comparativa</button>
+            </div>
+
+            <!-- EVOLUCIÓN DE CARTERA -->
+            <div id="evolucion" class="tab-content active">
+                <div class="chart-container tall">
+                    <canvas id="chartEvolucion"></canvas>
+                </div>
+                <div id="statsEvolucion" class="grid-3"></div>
+            </div>
+
+            <!-- POR TICKET -->
+            <div id="tickets" class="tab-content">
+                <div class="form-group" style="max-width: 300px;">
+                    <label>Seleccionar Ticket</label>
+                    <select id="tickerSelector" onchange="actualizarGraficoTicket()">
+                        <option value="">Cargando...</option>
+                    </select>
+                </div>
+                <div class="chart-container tall" id="chartTicketContainer" style="display: none;">
+                    <canvas id="chartTicket"></canvas>
+                </div>
+                <div id="statsTicket" class="grid-2" style="display: none;"></div>
+            </div>
+
+            <!-- COMPARATIVA -->
+            <div id="comparativa" class="tab-content">
+                <div class="chart-container tall">
+                    <canvas id="chartComparativa"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- DATOS Y ANÁLISIS DETALLADO -->
+        <div class="card">
+            <h2>📋 Operaciones</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="cambiarTabDatos('historial')">Historial</button>
+                <button class="tab-btn" onclick="cambiarTabDatos('portafolio')">Portafolio</button>
+                <button class="tab-btn" onclick="cambiarTabDatos('timeline')">Timeline</button>
+            </div>
+
+            <!-- HISTORIAL DE OPERACIONES -->
+            <div id="historial" class="tab-content active">
+                <div id="historialContent"></div>
+            </div>
+
+            <!-- PORTAFOLIO ACTUAL -->
+            <div id="portafolio" class="tab-content">
+                <div id="portafolioContent"></div>
+            </div>
+
+            <!-- TIMELINE -->
+            <div id="timeline" class="tab-content">
+                <div id="timelineContent"></div>
+            </div>
+        </div>
+
+        <!-- UTILIDADES -->
+        <div class="card">
+            <h2>⚙️ Utilidades</h2>
+            <div class="btn-group">
+                <button class="btn-secondary btn-small" onclick="exportarDatos()">📥 Descargar</button>
+                <button class="btn-secondary btn-small" onclick="importarDatos()">📤 Cargar</button>
+                <button class="btn-secondary btn-small" onclick="limpiarOperacion()">🗑️ Eliminar Op.</button>
+                <button class="btn-danger btn-small" onclick="limpiarTodo()">⚠️ Limpiar Todo</button>
+            </div>
+            <input type="file" id="fileInput" accept=".json" style="display: none;">
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMACIÓN -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <h3 id="confirmTitle">Confirmar</h3>
+            <p id="confirmMessage"></p>
+            <div class="modal-footer">
+                <button class="btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-danger" id="confirmBtn" onclick="">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====== CONFIGURACIÓN ======
+        const STORAGE_KEY = 'portafolio_datos';
+        
+        // Estructura de datos
+        let datos = {
+            operaciones: [],
+            preciosActuales: {},
+            historicoPrecios: []
+        };
+
+        // ====== INICIALIZACIÓN ======
+        window.addEventListener('load', () => {
+            cargarDatos();
+            actualizarUI();
+            // Establecer fecha de hoy por defecto
+            document.getElementById('fechaCompra').valueAsDate = new Date();
+        });
+
+        // ====== ALMACENAMIENTO ======
+        function guardarDatos() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(datos));
+            } catch (e) {
+                mostrarAlerta('Error al guardar datos: ' + e.message, 'error');
+            }
+        }
+
+        function cargarDatos() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                datos = stored ? JSON.parse(stored) : {
+                    operaciones: [],
+                    preciosActuales: {},
+                    historicoPrecios: []
+                };
+            } catch (e) {
+                mostrarAlerta('Error al cargar datos: ' + e.message, 'error');
+                datos = { operaciones: [], preciosActuales: {}, historicoPrecios: [] };
+            }
+        }
+
+        // ====== VALIDACIONES ======
+        function validarOperacion(ticker, cantidad, precioCompra, fechaCompra) {
+            const errores = [];
+
+            if (!ticker || ticker.trim().length === 0) {
+                errores.push('Ticker requerido');
+            }
+            if (ticker && ticker.length > 20) {
+                errores.push('Ticker muy largo (máx 20 caracteres)');
+            }
+            if (cantidad <= 0) {
+                errores.push('Cantidad debe ser mayor a 0');
+            }
+            if (cantidad > 1000000) {
+                errores.push('Cantidad sospechosamente alta');
+            }
+            if (precioCompra <= 0) {
+                errores.push('Precio debe ser mayor a 0');
+            }
+            if (precioCompra > 1000000) {
+                errores.push('Precio sospechosamente alto');
+            }
+            
+            const fecha = new Date(fechaCompra);
+            const hoy = new Date();
+            if (fecha > hoy) {
+                errores.push('La fecha no puede ser en el futuro');
+            }
+
+            return errores;
+        }
+
+        // ====== OPERACIONES ======
+        function registrarOperacion(e) {
+            e.preventDefault();
+
+            const ticker = document.getElementById('ticker').value.toUpperCase().trim();
+            const cantidad = parseFloat(document.getElementById('cantidad').value);
+            const moneda = document.getElementById('moneda').value;
+            const precioCompra = parseFloat(document.getElementById('precioCompra').value);
+            const fechaCompra = document.getElementById('fechaCompra').value;
+            const notas = document.getElementById('notas').value;
+
+            // Validar
+            const errores = validarOperacion(ticker, cantidad, precioCompra, fechaCompra);
+            if (errores.length > 0) {
+                mostrarAlerta(errores.join(', '), 'error');
+                return;
+            }
+
+            // Crear operación
+            const operacion = {
+                id: Date.now(),
+                ticker,
+                cantidad,
+                moneda,
+                precioCompra,
+                fechaCompra,
+                notas,
+                fechaRegistro: new Date().toISOString()
+            };
+
+            // Guardar en histórico de precios (precio al momento de compra)
+            const key = `${ticker}-${moneda}`;
+            if (!datos.historicoPrecios.some(h => h.ticker === ticker && h.moneda === moneda && h.fecha === fechaCompra)) {
+                datos.historicoPrecios.push({
+                    ticker,
+                    moneda,
+                    precio: precioCompra,
+                    fecha: fechaCompra,
+                    tipo: 'compra'
+                });
+            }
+
+            datos.operaciones.push(operacion);
+            guardarDatos();
+            document.getElementById('formOperacion').reset();
+            document.getElementById('fechaCompra').valueAsDate = new Date();
+            actualizarUI();
+            mostrarAlerta(`✓ ${cantidad} x ${ticker} registrado`, 'success');
+        }
+
+        // ====== PRECIOS ACTUALES ======
+        function actualizarPrecioActual(ticker, moneda, precio) {
+            if (!ticker || !precio || isNaN(precio) || precio <= 0) {
+                mostrarAlerta('Precio inválido', 'error');
+                return;
+            }
+
+            const key = `${ticker}-${moneda}`;
+            if (!datos.preciosActuales[key]) {
+                datos.preciosActuales[key] = [];
+            }
+
+            datos.preciosActuales[key].push({
+                precio: parseFloat(precio),
+                fecha: new Date().toISOString()
+            });
+
+            // Guardar en histórico
+            datos.historicoPrecios.push({
+                ticker,
+                moneda,
+                precio: parseFloat(precio),
+                fecha: new Date().toISOString().split('T')[0],
+                tipo: 'actualización'
+            });
+
+            guardarDatos();
+            actualizarUI();
+            mostrarAlerta(`Precio ${ticker} actualizado`, 'success');
+        }
+
+        // ====== CÁLCULOS ======
+        function obtenerPrecioActual(ticker, moneda) {
+            const key = `${ticker}-${moneda}`;
+            const precios = datos.preciosActuales[key];
+            if (!precios || precios.length === 0) return null;
+            return precios[precios.length - 1].precio;
+        }
+
+        function obtenerPortafolioActual() {
+            const portafolio = {};
+            datos.operaciones.forEach(op => {
+                const key = `${op.ticker}-${op.moneda}`;
+                if (!portafolio[key]) {
+                    portafolio[key] = {
+                        ticker: op.ticker,
+                        moneda: op.moneda,
+                        cantidad: 0,
+                        precioPromedio: 0,
+                        totalInvertido: 0,
+                        operaciones: []
+                    };
+                }
+                portafolio[key].cantidad += op.cantidad;
+                portafolio[key].totalInvertido += op.cantidad * op.precioCompra;
+                portafolio[key].precioPromedio = portafolio[key].totalInvertido / portafolio[key].cantidad;
+                portafolio[key].operaciones.push(op);
+            });
+            return portafolio;
+        }
+
+        function calcularPyL(ticker, moneda) {
+            const portafolio = obtenerPortafolioActual();
+            const key = `${ticker}-${moneda}`;
+            const posicion = portafolio[key];
+
+            if (!posicion) return null;
+
+            const precioActual = obtenerPrecioActual(ticker, moneda);
+            if (precioActual === null) {
+                return {
+                    valorActual: null,
+                    ganancia: null,
+                    gananciaPercent: null,
+                    precioActual: null
+                };
+            }
+
+            const valorActual = posicion.cantidad * precioActual;
+            const ganancia = valorActual - posicion.totalInvertido;
+            const gananciaPercent = (ganancia / posicion.totalInvertido * 100);
+
+            return {
+                valorActual,
+                ganancia,
+                gananciaPercent,
+                precioActual
+            };
+        }
+
+        function obtenerValorCarteraActual() {
+            const portafolio = obtenerPortafolioActual();
+            let valorTotal = 0;
+            let valorARS = 0;
+            let valorUSD = 0;
+
+            Object.values(portafolio).forEach(pos => {
+                const pyl = calcularPyL(pos.ticker, pos.moneda);
+                if (pyl && pyl.valorActual !== null) {
+                    valorTotal += pyl.valorActual;
+                    if (pos.moneda === 'ARS') valorARS += pyl.valorActual;
+                    if (pos.moneda === 'USD') valorUSD += pyl.valorActual;
+                }
+            });
+
+            return { valorTotal, valorARS, valorUSD };
+        }
+
+        function obtenerValorCarteraInvertida() {
+            const portafolio = obtenerPortafolioActual();
+            let total = 0;
+            let ars = 0;
+            let usd = 0;
+
+            Object.values(portafolio).forEach(pos => {
+                total += pos.totalInvertido;
+                if (pos.moneda === 'ARS') ars += pos.totalInvertido;
+                if (pos.moneda === 'USD') usd += pos.totalInvertido;
+            });
+
+            return { total, ars, usd };
+        }
+
+        // ====== FORMATOS ======
+        function formatearMoneda(valor, moneda) {
+            if (valor === null || isNaN(valor)) return '—';
+            const prefix = moneda === 'USD' ? 'USD ' : 'ARS ';
+            return prefix + Math.abs(valor).toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatearPorcentaje(valor) {
+            if (valor === null || isNaN(valor)) return '—';
+            return (valor > 0 ? '+' : '') + valor.toFixed(2) + '%';
+        }
+
+        // ====== ALERTAS ======
+        function mostrarAlerta(mensaje, tipo = 'info') {
+            const container = document.getElementById('alertContainer');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${tipo}`;
+            alert.innerHTML = `
+                <span>${mensaje}</span>
+                <button onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(alert);
+            setTimeout(() => alert.remove(), 4000);
+        }
+
+        // ====== UI - DASHBOARD ======
+        function actualizarDashboard() {
+            const portafolio = obtenerPortafolioActual();
+            const valorInvertido = obtenerValorCarteraInvertida();
+            const valorActual = obtenerValorCarteraActual();
+
+            let gananciaTotalARS = 0, gananciaTotalUSD = 0;
+            Object.values(portafolio).forEach(pos => {
+                const pyl = calcularPyL(pos.ticker, pos.moneda);
+                if (pyl && pyl.ganancia !== null) {
+                    if (pos.moneda === 'ARS') gananciaTotalARS += pyl.ganancia;
+                    if (pos.moneda === 'USD') gananciaTotalUSD += pyl.ganancia;
+                }
+            });
+
+            const stats = [
+                {
+                    label: 'Invertido ARS',
+                    valor: valorInvertido.ars,
+                    moneda: 'ARS'
+                },
+                {
+                    label: 'Invertido USD',
+                    valor: valorInvertido.usd,
+                    moneda: 'USD'
+                },
+                {
+                    label: 'Valor Actual ARS',
+                    valor: valorActual.valorARS,
+                    cambio: gananciaTotalARS,
+                    moneda: 'ARS'
+                },
+                {
+                    label: 'Valor Actual USD',
+                    valor: valorActual.valorUSD,
+                    cambio: gananciaTotalUSD,
+                    moneda: 'USD'
+                },
+                {
+                    label: 'Total Posiciones',
+                    valor: Object.keys(portafolio).length,
+                    moneda: null
+                },
+                {
+                    label: 'Ganancia Total',
+                    valor: gananciaTotalARS + gananciaTotalUSD,
+                    cambioPercent: Object.keys(portafolio).length > 0 ? 
+                        (((gananciaTotalARS + gananciaTotalUSD) / (valorInvertido.ars + valorInvertido.usd)) * 100) : 0,
+                    moneda: 'MIXED'
+                }
+            ];
+
+            let html = '';
+            stats.forEach(stat => {
+                const classCambio = stat.cambio !== undefined ? (stat.cambio >= 0 ? 'positive' : 'negative') : '';
+                let cambioHtml = '';
+                if (stat.cambio !== undefined) {
+                    cambioHtml = `<div class="stat-change ${classCambio}">${formatearMoneda(stat.cambio, stat.moneda)}</div>`;
+                } else if (stat.cambioPercent !== undefined) {
+                    cambioHtml = `<div class="stat-change ${classCambio}">${formatearPorcentaje(stat.cambioPercent)}</div>`;
+                }
+
+                html += `
+                    <div class="stat-card">
+                        <div class="stat-label">${stat.label}</div>
+                        <div class="stat-value">${
+                            stat.moneda === 'MIXED' ? 
+                            (stat.valor >= 0 ? '+' : '') + stat.valor.toLocaleString('es-AR', { maximumFractionDigits: 0 }) :
+                            formatearMoneda(stat.valor, stat.moneda)
+                        }</div>
+                        ${cambioHtml}
+                    </div>
+                `;
+            });
+
+            document.getElementById('dashboardStats').innerHTML = html;
+        }
+
+        // ====== UI - PRECIOS ======
+        function actualizarFormularioPrecio() {
+            const portafolio = obtenerPortafolioActual();
+            let html = '';
+
+            Object.keys(portafolio).sort().forEach(key => {
+                const pos = portafolio[key];
+                const precioActualVal = obtenerPrecioActual(pos.ticker, pos.moneda) || '';
+                
+                html += `
+                    <div class="form-group" style="display: flex; gap: 10px; align-items: flex-end; margin-bottom: 10px;">
+                        <div style="flex: 1;">
+                            <label style="margin-bottom: 3px;">${pos.ticker} <span class="badge ${pos.moneda === 'ARS' ? 'badge-ars' : 'badge-usd'}">${pos.moneda}</span></label>
+                            <input type="number" value="${precioActualVal}" step="0.01" min="0" placeholder="Precio" id="precio_${key}" style="padding: 8px;">
+                        </div>
+                        <button type="button" class="btn-small btn-primary" onclick="actualizarPrecioActual('${pos.ticker}', '${pos.moneda}', document.getElementById('precio_${key}').value)">✓</button>
+                    </div>
+                `;
+            });
+
+            if (html === '') {
+                html = '<p style="color: #999; text-align: center; padding: 20px;">Agrega operaciones para actualizar precios</p>';
+            }
+
+            document.getElementById('actualizarPreciosForm').innerHTML = html;
+        }
+
+        // ====== UI - GRÁFICOS ======
+        let chartEvolucion = null, chartTicket = null, chartComparativa = null;
+
+        function actualizarGraficos() {
+            actualizarGraficoEvolucion();
+            actualizarSelectorTickets();
+            actualizarGraficoComparativa();
+        }
+
+        function actualizarGraficoEvolucion() {
+            const portafolio = obtenerPortafolioActual();
+            
+            // Generar fechas desde la primera operación hasta hoy
+            const fechas = new Set();
+            datos.operaciones.forEach(op => fechas.add(op.fechaCompra));
+            
+            if (fechas.size === 0) {
+                document.getElementById('evolucion').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📊</div>Sin datos para graficar</div>';
+                return;
+            }
+
+            const fechasSorted = Array.from(fechas).sort();
+            const datosValor = [];
+            const datosValorARS = [];
+            const datosValorUSD = [];
+
+            fechasSorted.forEach(fecha => {
+                let valor = 0, valorARS = 0, valorUSD = 0;
+
+                Object.values(portafolio).forEach(pos => {
+                    // Solo contar operaciones hasta esta fecha
+                    const opsHastaFecha = pos.operaciones.filter(op => op.fechaCompra <= fecha);
+                    if (opsHastaFecha.length > 0) {
+                        const cantidadTotal = opsHastaFecha.reduce((sum, op) => sum + op.cantidad, 0);
+                        // Usar precio de compra promedio
+                        const precioPromedio = opsHastaFecha.reduce((sum, op) => sum + (op.cantidad * op.precioCompra), 0) / cantidadTotal;
+                        
+                        // Buscar precio más cercano a esa fecha
+                        let precioActual = precioPromedio;
+                        const preciosEnFecha = datos.historicoPrecios.filter(h => h.ticker === pos.ticker && h.moneda === pos.moneda && h.fecha <= fecha);
+                        if (preciosEnFecha.length > 0) {
+                            precioActual = preciosEnFecha[preciosEnFecha.length - 1].precio;
+                        }
+
+                        const valorPos = cantidadTotal * precioActual;
+                        valor += valorPos;
+                        if (pos.moneda === 'ARS') valorARS += valorPos;
+                        if (pos.moneda === 'USD') valorUSD += valorPos;
+                    }
+                });
+
+                datosValor.push(valor);
+                datosValorARS.push(valorARS);
+                datosValorUSD.push(valorUSD);
+            });
+
+            const ctx = document.getElementById('chartEvolucion').getContext('2d');
+            if (chartEvolucion) chartEvolucion.destroy();
+            
+            chartEvolucion = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: fechasSorted.map(f => f.substring(5)),
+                    datasets: [
+                        {
+                            label: 'Valor Total',
+                            data: datosValor,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'ARS',
+                            data: datosValorARS,
+                            borderColor: '#ffc107',
+                            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'USD',
+                            data: datosValorUSD,
+                            borderColor: '#17a2b8',
+                            backgroundColor: 'rgba(23, 162, 184, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top' }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // Stats evolución
+            const valorInicial = datosValor[0];
+            const valorFinal = datosValor[datosValor.length - 1];
+            const cambio = valorFinal - valorInicial;
+            const cambioPercent = valorInicial > 0 ? (cambio / valorInicial) * 100 : 0;
+
+            let statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-label">Inversión Inicial</div>
+                    <div class="stat-value">ARS ${valorInicial.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Valor Actual</div>
+                    <div class="stat-value">ARS ${valorFinal.toLocaleString('es-AR', { maximumFractionDigits: 0 })}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Cambio</div>
+                    <div class="stat-value ${cambio >= 0 ? 'positive' : 'negative'}">
+                        ${(cambio >= 0 ? '+' : '')}ARS ${cambio.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
+                    </div>
+                    <div class="stat-change ${cambio >= 0 ? 'positive' : 'negative'}">${formatearPorcentaje(cambioPercent)}</div>
+                </div>
+            `;
+
+            document.getElementById('statsEvolucion').innerHTML = statsHtml;
+        }
+
+        function actualizarSelectorTickets() {
+            const portafolio = obtenerPortafolioActual();
+            const tickets = Object.keys(portafolio).sort();
+
+            let html = '<option value="">Seleccionar...</option>';
+            tickets.forEach(key => {
+                const pos = portafolio[key];
+                html += `<option value="${pos.ticker}-${pos.moneda}">${pos.ticker} (${pos.moneda})</option>`;
+            });
+
+            document.getElementById('tickerSelector').innerHTML = html;
+        }
+
+        function actualizarGraficoTicket() {
+            const selected = document.getElementById('tickerSelector').value;
+            if (!selected) {
+                document.getElementById('chartTicketContainer').style.display = 'none';
+                document.getElementById('statsTicket').style.display = 'none';
+                return;
+            }
+
+            const [ticker, moneda] = selected.split('-');
+            const portafolio = obtenerPortafolioActual();
+            const posicion = portafolio[selected];
+
+            if (!posicion) return;
+
+            // Datos históricos del ticket
+            const opsTicket = posicion.operaciones.sort((a, b) => new Date(a.fechaCompra) - new Date(b.fechaCompra));
+            const fechas = opsTicket.map(op => op.fechaCompra);
+            const cantidades = [];
+            const valores = [];
+            
+            let cantidadAcumulada = 0;
+            opsTicket.forEach((op, idx) => {
+                cantidadAcumulada += op.cantidad;
+                cantidades.push(cantidadAcumulada);
+                valores.push(cantidadAcumulada * op.precioCompra);
+            });
+
+            const ctx = document.getElementById('chartTicket').getContext('2d');
+            if (chartTicket) chartTicket.destroy();
+
+            chartTicket = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: fechas.map(f => f.substring(5)),
+                    datasets: [
+                        {
+                            label: 'Cantidad',
+                            data: cantidades,
+                            borderColor: '#667eea',
+                            backgroundColor: 'rgba(102, 126, 234, 0.6)',
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'Valor Invertido',
+                            data: valores,
+                            borderColor: '#764ba2',
+                            backgroundColor: 'rgba(118, 75, 162, 0.6)',
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            position: 'left',
+                            title: { display: true, text: 'Cantidad' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            position: 'right',
+                            title: { display: true, text: 'Valor' }
+                        }
+                    }
+                }
+            });
+
+            // Stats del ticket
+            const pyl = calcularPyL(ticker, moneda);
+            const precioActual = obtenerPrecioActual(ticker, moneda);
+
+            let statsHtml = `
+                <div class="stat-card">
+                    <div class="stat-label">Cantidad Total</div>
+                    <div class="stat-value">${posicion.cantidad.toFixed(4)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Precio Promedio</div>
+                    <div class="stat-value">${formatearMoneda(posicion.precioPromedio, moneda)}</div>
+                </div>
+            `;
+
+            if (precioActual !== null) {
+                statsHtml += `
+                    <div class="stat-card">
+                        <div class="stat-label">Precio Actual</div>
+                        <div class="stat-value">${formatearMoneda(precioActual, moneda)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Valor Total Invertido</div>
+                        <div class="stat-value">${formatearMoneda(posicion.totalInvertido, moneda)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Valor Actual</div>
+                        <div class="stat-value">${formatearMoneda(pyl.valorActual, moneda)}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">P&L</div>
+                        <div class="stat-value ${pyl.ganancia >= 0 ? 'positive' : 'negative'}">
+                            ${formatearMoneda(pyl.ganancia, moneda)}
+                        </div>
+                        <div class="stat-change ${pyl.ganancia >= 0 ? 'positive' : 'negative'}">${formatearPorcentaje(pyl.gananciaPercent)}</div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('statsTicket').innerHTML = statsHtml;
+            document.getElementById('chartTicketContainer').style.display = 'block';
+            document.getElementById('statsTicket').style.display = 'grid';
+        }
+
+        function actualizarGraficoComparativa() {
+            const portafolio = obtenerPortafolioActual();
+            const tickets = Object.keys(portafolio).sort();
+
+            if (tickets.length === 0) {
+                document.getElementById('comparativa').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📊</div>Sin datos para comparar</div>';
+                return;
+            }
+
+            const labels = tickets.map(key => {
+                const pos = portafolio[key];
+                return `${pos.ticker} (${pos.moneda})`;
+            });
+
+            const dataInvertido = tickets.map(key => portafolio[key].totalInvertido);
+            const dataActual = tickets.map(key => {
+                const pyl = calcularPyL(portafolio[key].ticker, portafolio[key].moneda);
+                return pyl && pyl.valorActual !== null ? pyl.valorActual : 0;
+            });
+
+            const ctx = document.getElementById('chartComparativa').getContext('2d');
+            if (chartComparativa) chartComparativa.destroy();
+
+            chartComparativa = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Invertido',
+                            data: dataInvertido,
+                            backgroundColor: 'rgba(102, 126, 234, 0.6)'
+                        },
+                        {
+                            label: 'Valor Actual',
+                            data: dataActual,
+                            backgroundColor: 'rgba(118, 75, 162, 0.6)'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // ====== UI - TABLAS ======
+        function actualizarTablas() {
+            actualizarTablaHistorial();
+            actualizarTablaPortafolio();
+            actualizarTimeline();
+        }
+
+        function actualizarTablaHistorial() {
+            if (datos.operaciones.length === 0) {
+                document.getElementById('historialContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📋</div>Sin operaciones</div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Ticker</th><th>Cantidad</th><th>Moneda</th><th>P. Compra</th><th>Total</th><th>Fecha</th><th>Notas</th><th>Acc.</th></tr></thead><tbody>';
+
+            datos.operaciones.sort((a, b) => new Date(b.fechaCompra) - new Date(a.fechaCompra)).forEach(op => {
+                html += `
+                    <tr>
+                        <td><strong>${op.ticker}</strong></td>
+                        <td>${op.cantidad.toFixed(4)}</td>
+                        <td><span class="badge ${op.moneda === 'ARS' ? 'badge-ars' : 'badge-usd'}">${op.moneda}</span></td>
+                        <td>${formatearMoneda(op.precioCompra, op.moneda)}</td>
+                        <td>${formatearMoneda(op.cantidad * op.precioCompra, op.moneda)}</td>
+                        <td>${op.fechaCompra}</td>
+                        <td style="font-size: 11px; color: #999;">${op.notas || '—'}</td>
+                        <td><button class="btn-danger" onclick="eliminarOperacionUI(${op.id})">✕</button></td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('historialContent').innerHTML = html;
+        }
+
+        function actualizarTablaPortafolio() {
+            const portafolio = obtenerPortafolioActual();
+
+            if (Object.keys(portafolio).length === 0) {
+                document.getElementById('portafolioContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📊</div>Sin posiciones</div>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Ticker</th><th>Moneda</th><th>Cantidad</th><th>P. Promedio</th><th>Invertido</th><th>P. Actual</th><th>Valor Actual</th><th>P&L</th><th>%</th></tr></thead><tbody>';
+
+            Object.keys(portafolio).sort().forEach(key => {
+                const pos = portafolio[key];
+                const pyl = calcularPyL(pos.ticker, pos.moneda);
+                const precioActual = obtenerPrecioActual(pos.ticker, pos.moneda);
+
+                let rowClass = '';
+                if (pyl && pyl.ganancia !== null) {
+                    rowClass = pyl.ganancia >= 0 ? 'style="background: rgba(40, 167, 69, 0.05)"' : 'style="background: rgba(220, 53, 69, 0.05)"';
+                }
+
+                html += `
+                    <tr ${rowClass}>
+                        <td><strong>${pos.ticker}</strong></td>
+                        <td><span class="badge ${pos.moneda === 'ARS' ? 'badge-ars' : 'badge-usd'}">${pos.moneda}</span></td>
+                        <td>${pos.cantidad.toFixed(4)}</td>
+                        <td>${formatearMoneda(pos.precioPromedio, pos.moneda)}</td>
+                        <td>${formatearMoneda(pos.totalInvertido, pos.moneda)}</td>
+                        <td>${precioActual !== null ? formatearMoneda(precioActual, pos.moneda) : '—'}</td>
+                        <td>${pyl && pyl.valorActual !== null ? formatearMoneda(pyl.valorActual, pos.moneda) : '—'}</td>
+                        <td class="${pyl && pyl.ganancia !== null ? (pyl.ganancia >= 0 ? 'positive' : 'negative') : ''}">${pyl && pyl.ganancia !== null ? formatearMoneda(pyl.ganancia, pos.moneda) : '—'}</td>
+                        <td class="${pyl && pyl.ganancia !== null ? (pyl.ganancia >= 0 ? 'positive' : 'negative') : ''}">${pyl && pyl.gananciaPercent !== null ? formatearPorcentaje(pyl.gananciaPercent) : '—'}</td>
+                    </tr>
+                `;
+            });
+
+            html += '</tbody></table>';
+            document.getElementById('portafolioContent').innerHTML = html;
+        }
+
+        function actualizarTimeline() {
+            if (datos.operaciones.length === 0) {
+                document.getElementById('timelineContent').innerHTML = '<div class="empty-state"><div class="empty-state-icon">📅</div>Sin eventos</div>';
+                return;
+            }
+
+            let html = '<div class="timeline">';
+
+            datos.operaciones.sort((a, b) => new Date(b.fechaCompra) - new Date(a.fechaCompra)).forEach(op => {
+                html += `
+                    <div class="timeline-item">
+                        <div class="timeline-item-title">${op.ticker} <span class="badge ${op.moneda === 'ARS' ? 'badge-ars' : 'badge-usd'}">${op.moneda}</span></div>
+                        <div class="timeline-item-meta">${op.fechaCompra} • ${op.cantidad.toFixed(4)} unidades @ ${formatearMoneda(op.precioCompra, op.moneda)}</div>
+                        ${op.notas ? `<div style="font-size: 12px; color: #666; margin-top: 4px;">📝 ${op.notas}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            document.getElementById('timelineContent').innerHTML = html;
+        }
+
+        // ====== TABS ======
+        function cambiarTabAnalisis(tab) {
+            document.querySelectorAll('#evolucion, #tickets, #comparativa').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.parentElement.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function cambiarTabDatos(tab) {
+            document.querySelectorAll('#historial, #portafolio, #timeline').forEach(el => el.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.parentElement.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // ====== ELIMINAR OPERACIÓN ======
+        function eliminarOperacionUI(id) {
+            const op = datos.operaciones.find(o => o.id === id);
+            if (!op) return;
+
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = 'Eliminar operación';
+            document.getElementById('confirmMessage').textContent = `¿Eliminar ${op.cantidad} x ${op.ticker} (${op.moneda})?`;
+            document.getElementById('confirmBtn').onclick = () => {
+                eliminarOperacion(id);
+                cerrarModal();
+            };
+            modal.classList.add('active');
+        }
+
+        function eliminarOperacion(id) {
+            datos.operaciones = datos.operaciones.filter(op => op.id !== id);
+            guardarDatos();
+            actualizarUI();
+            mostrarAlerta('✓ Operación eliminada', 'success');
+        }
+
+        // ====== EXPORT / IMPORT ======
+        function exportarDatos() {
+            const datosExportar = {
+                datos: datos,
+                exportDate: new Date().toISOString()
+            };
+
+            const json = JSON.stringify(datosExportar, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `portafolio_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            mostrarAlerta('✓ Datos descargados', 'success');
+        }
+
+        function importarDatos() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    const datosImportados = JSON.parse(event.target.result);
+                    // Soportar tanto formato antiguo como nuevo
+                    datos = datosImportados.datos || datosImportados;
+                    guardarDatos();
+                    actualizarUI();
+                    mostrarAlerta('✓ Datos importados correctamente', 'success');
+                } catch (error) {
+                    mostrarAlerta('Error al importar: ' + error.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            this.value = '';
+        });
+
+        function limpiarOperacion() {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = '⚠️ Confirmar acción';
+            document.getElementById('confirmMessage').textContent = '¿Deseas limpiar una operación específica? Usa el botón ✕ en la tabla.';
+            document.getElementById('confirmBtn').textContent = 'Entendido';
+            document.getElementById('confirmBtn').onclick = cerrarModal;
+            modal.classList.add('active');
+        }
+
+        function limpiarTodo() {
+            const modal = document.getElementById('confirmModal');
+            document.getElementById('confirmTitle').textContent = '⚠️ ATENCIÓN';
+            document.getElementById('confirmMessage').textContent = '¿Eliminar TODOS los datos? No se puede deshacer.';
+            document.getElementById('confirmBtn').textContent = 'Eliminar TODO';
+            document.getElementById('confirmBtn').onclick = () => {
+                datos = { operaciones: [], preciosActuales: {}, historicoPrecios: [] };
+                guardarDatos();
+                actualizarUI();
+                cerrarModal();
+                mostrarAlerta('✓ Datos eliminados', 'success');
+            };
+            modal.classList.add('active');
+        }
+
+        function cerrarModal() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        // ====== ACTUALIZACIÓN GLOBAL ======
+        function actualizarUI() {
+            actualizarDashboard();
+            actualizarFormularioPrecio();
+            actualizarGraficos();
+            actualizarTablas();
+        }
+
+        // ====== ENTRADA RÁPIDA ======
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 's') {
+                e.preventDefault();
+                exportarDatos();
+            }
+        });
+    </script>
+</body>
+</html>
